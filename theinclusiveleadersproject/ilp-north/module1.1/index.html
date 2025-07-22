@@ -3,188 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inclusive Leaders Project - Foundational Identity</title>
+    <title>Module 1.1: Discover Your Team DNA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* AEM/Accessibility Friendly Theme */
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #002a36; /* Dark Teal */
-            overflow: hidden;
-        }
-        .font-serif {
-            font-family: 'Playfair Display', serif;
-        }
-        .gradient-text {
-            background: linear-gradient(to right, #f39c12, #fde68a, #f39c12);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #002a36; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .gradient-text { background: linear-gradient(to right, #f39c12, #fde68a, #f39c12); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .text-gold { color: #f39c12; }
 
-        /* Video Background */
-        #video-bg {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: -2;
-            transform: translateX(-50%) translateY(-50%);
-            object-fit: cover;
-        }
-        .video-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(10, 25, 15, 0.7); /* Slightly darker for better contrast */
-            z-index: -1;
-        }
+        #video-bg { position: fixed; top: 0; left: 0; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -2; object-fit: cover; }
+        .video-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(10, 25, 15, 0.75); z-index: -1; }
 
-        /* Horizontal Scrolling Container */
-        .slider-container {
-            display: flex;
-            overflow-x: scroll;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            width: 100vw;
-            height: 100vh;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-        .slider-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        /* Individual Slide Styling */
-        .slide {
-            flex: 0 0 100vw;
-            width: 100vw;
-            height: 100vh;
-            scroll-snap-align: start;
+        .section {
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 1rem 2rem;
+            padding: 5rem 2rem;
             position: relative;
             opacity: 0;
-            transform: scale(0.95);
-            transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
-        /* Glassmorphism Card Effect - NO SCROLLING */
-        .content-card {
-            background: rgba(0, 60, 76, 0.45);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(243, 156, 18, 0.2);
-            border-radius: 1.5rem;
-            color: #e5e7eb;
-            overflow: hidden; /* This is key to prevent internal scrollbars */
-        }
+        .content-card { background: rgba(0, 60, 76, 0.55); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(243, 156, 18, 0.2); border-radius: 1.5rem; color: #e5e7eb; width: 100%; }
         
-        /* Form elements with clear focus states for accessibility */
-        .themed-textarea, .themed-input {
-            background-color: rgba(0, 21, 28, 0.5);
-            border: 1px solid rgba(243, 156, 18, 0.4);
-            color: #e5e7eb;
-            transition: all 0.3s ease;
-        }
-        .themed-textarea:focus, .themed-input:focus {
-            background-color: rgba(0, 21, 28, 0.7);
-            border-color: #f39c12;
-            box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.5); /* Brighter focus ring */
-            outline: none;
-        }
+        .themed-textarea, .themed-input, .themed-select { background-color: rgba(0, 21, 28, 0.5); border: 1px solid rgba(243, 156, 18, 0.4); color: #e5e7eb; transition: all 0.3s ease; border-radius: 0.5rem; }
+        .themed-textarea:focus-visible, .themed-input:focus-visible, .themed-select:focus-visible { background-color: rgba(0, 21, 28, 0.7); border-color: #f39c12; box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.5); outline: none; }
         .themed-label { color: #fde68a; }
-        .commitment-box {
-            background: rgba(0, 21, 28, 0.4);
-            border-left: 4px solid #f39c12;
-        }
 
-        /* Navigation with ARIA labels */
-        .nav-arrow {
-            position: fixed;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 60, 76, 0.3);
-            color: white;
-            border-radius: 50%;
-            width: 3.5rem;
-            height: 3.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 10;
-            border: 1px solid rgba(243, 156, 18, 0.3);
-            backdrop-filter: blur(5px);
-        }
-        .nav-arrow:hover, .nav-arrow:focus {
-            background-color: rgba(0, 60, 76, 0.6);
-            transform: translateY(-50%) scale(1.1);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.5);
-        }
-        #prev-btn { left: 2rem; }
-        #next-btn { right: 2rem; }
+        #side-nav { position: fixed; top: 50%; right: 2rem; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.75rem; z-index: 10; }
+        .nav-dot { width: 12px; height: 12px; border-radius: 50%; background-color: rgba(255, 255, 255, 0.3); transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; }
+        .nav-dot.active { background-color: #f39c12; transform: scale(1.3); }
+        .nav-dot:focus-visible { outline: none; border-color: #fde68a; }
 
-        /* Progress Dots with ARIA labels */
-        #progress-dots {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 0.75rem;
-            z-index: 10;
-        }
-        .progress-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .progress-dot.active {
-            background-color: #f39c12;
-            transform: scale(1.3);
-        }
-        .progress-dot:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.5);
-        }
-
-        .slide.active { opacity: 1; transform: scale(1); }
-
-        /* Values Discovery Slide Specific Styles */
-        .value-btn {
-            background-color: rgba(0, 21, 28, 0.5);
-            border: 1px solid rgba(243, 156, 18, 0.4);
-            transition: all 0.2s ease-in-out;
-        }
-        .value-btn:hover {
-            background-color: rgba(0, 21, 28, 0.8);
-            border-color: #fde68a;
-        }
-        .value-btn.selected {
-            background-color: #f39c12;
-            color: #002a36;
-            font-weight: 600;
-            border-color: #fde68a;
-            transform: scale(1.05);
-        }
-        .value-btn:focus {
-             outline: none;
-             box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.5);
-        }
+        .value-btn { background-color: rgba(0, 21, 28, 0.5); border: 1px solid rgba(243, 156, 18, 0.4); transition: all 0.2s ease-in-out; }
+        .value-btn:hover { background-color: rgba(0, 21, 28, 0.8); border-color: #fde68a; }
+        .value-btn.selected { background-color: #f39c12; color: #002a36; font-weight: 600; border-color: #fde68a; transform: scale(1.05); }
+        .value-btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.5); }
+        .johari-quadrant { border-radius: 1rem; padding: 1rem; border: 1px solid rgba(243, 156, 18, 0.4); }
 
         @media print {
             body * { visibility: hidden; }
@@ -200,272 +63,197 @@
     <div class="video-overlay"></div>
     <video playsinline autoplay muted loop id="video-bg">
         <source src="https://res.cloudinary.com/do7xjiqlw/video/upload/v1753188687/Forest_Video_Ready_Now__nxlpip.mp4" type="video/mp4">
-        Your browser does not support the video tag.
     </video>
+    
+    <nav id="side-nav" aria-label="Module Sections"></nav>
 
-    <main id="slider-container" class="slider-container">
+    <main id="main-content">
         
-        <!-- Slide 0: Welcome -->
-        <section id="slide-0" class="slide" role="region" aria-labelledby="welcome-title">
-            <div class="text-center text-white p-8">
-                <h1 id="welcome-title" class="font-serif text-5xl md:text-7xl font-black tracking-tight leading-tight gradient-text">Module 1.1: Foundational Identity</h1>
-                <p class="mt-6 text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto">A journey into the core of who you are as a leader and how your story shapes your impact.</p>
-                <div class="mt-12 animate-pulse flex flex-col items-center">
-                    <p class="text-lg text-gold">Scroll to begin your journey</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mt-2 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+        <!-- Part 1: The Spark -->
+        <section id="section-0" class="section" role="region" aria-labelledby="welcome-title">
+            <div class="max-w-4xl content-card p-8 lg:p-12 text-center">
+                <h2 class="font-serif text-2xl text-amber-300">Part 1: The Spark</h2>
+                <h1 id="welcome-title" class="font-serif text-4xl md:text-6xl font-black tracking-tight leading-tight gradient-text mt-2">Welcome & The Case for a Valued Team</h1>
+                <p class="mt-6 text-xl text-gray-300 max-w-2xl mx-auto">High-performing teams are built on a foundation of shared values and psychological safety. This module is your guide to discovering that foundation, starting with you.</p>
+                <div class="mt-8">
+                     <label for="poll-impact" class="block text-xl font-semibold themed-label mb-2">How critical is a focus on inclusion to your team's success?</label>
+                     <select id="poll-impact" class="w-full max-w-sm mx-auto p-2 themed-select"><option>1 (Not Critical)</option><option>2</option><option>3 (Somewhat Critical)</option><option>4</option><option>5 (Absolutely Critical)</option></select>
                 </div>
             </div>
         </section>
-
-        <!-- Slide 1: Educator Spotlight Intro -->
-        <section id="slide-1" class="slide" role="region" aria-labelledby="spotlight-title">
-            <div class="w-full max-w-4xl content-card p-8 lg:p-12" role="group">
+        
+        <section id="section-1" class="section" role="region" aria-labelledby="spotlight-title">
+            <div class="max-w-4xl content-card p-8 lg:p-12" role="group">
                 <div class="text-center">
-                    <h2 id="spotlight-title" class="font-serif text-4xl md:text-6xl font-black gradient-text tracking-tight mb-6">Educator Spotlight</h2>
-                    <img src="https://placehold.co/150x150/f39c12/002a36?text=S.H.B." alt="A portrait of Dr. Sharonica Hardin-Bartley, an educational leader." class="w-40 h-40 rounded-full border-4 border-amber-300 shadow-2xl mx-auto">
-                    <h3 class="text-3xl md:text-4xl font-bold mt-6 text-white">Dr. Sharonica Hardin-Bartley</h3>
-                    <p class="text-xl font-medium text-amber-300 mt-1">Superintendent, The School District of University City</p>
-                    <p class="text-lg md:text-xl leading-relaxed mt-6 max-w-3xl mx-auto">Dr. Hardin-Bartley's leadership is centered on caring for the "whole child." In the next slide, listen for how she connects personal identity to leadership effectiveness.</p>
+                    <h2 id="spotlight-title" class="font-serif text-4xl md:text-5xl font-black gradient-text tracking-tight mb-6">Spotlight on Value-Driven Leadership</h2>
+                    <figure>
+                        <img src="https://placehold.co/150x150/f39c12/002a36?text=S.H.B." alt="A portrait of Dr. Sharonica Hardin-Bartley." class="w-40 h-40 rounded-full border-4 border-amber-300 shadow-2xl mx-auto">
+                        <figcaption class="mt-6"><h3 class="text-3xl font-bold text-white">Dr. Sharonica Hardin-Bartley</h3></figcaption>
+                    </figure>
+                    <p class="text-lg md:text-xl mt-6">Listen for how Dr. Hardin-Bartley connects her core values to her leadership actions.</p>
+                    <figure class="w-full mt-8 shadow-2xl rounded-2xl overflow-hidden border-2 border-gray-600 aspect-video">
+                        <iframe class="w-full h-full" src="https://www.youtube.com/embed/3PnQ100VrsY" title="YouTube video player: Interview with Dr. Sharonica Hardin-Bartley" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </figure>
+                     <div class="mt-8">
+                        <label for="prompt-spotlight" class="block text-xl font-semibold themed-label mb-2">Dr. Hardin-Bartley's leadership is guided by her value of caring for the 'whole child.' What is one value you hope guides *your* leadership?</label>
+                        <input id="prompt-spotlight" type="text" class="w-full p-3 themed-input mt-2" placeholder="My guiding value is...">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 2: The Mirror -->
+        <section id="section-2" class="section" role="region" aria-labelledby="johari-title">
+            <div class="max-w-5xl content-card p-8 lg:p-12">
+                 <h2 class="font-serif text-2xl text-amber-300 text-center">Part 2: The Mirror</h2>
+                <h3 id="johari-title" class="font-serif text-4xl md:text-5xl font-bold gradient-text text-center mt-2 mb-6">Understanding Your Leadership Lens</h3>
+                <p class="text-center text-lg max-w-3xl mx-auto mb-8">The Johari Window is a model for exploring what we know about ourselves versus what others know. The goal is to increase the 'Open Self' through trust and feedback.</p>
+                <div class="grid md:grid-cols-2 gap-4 text-center">
+                    <div class="johari-quadrant"><h4 class="font-serif text-2xl text-green-300">Open Self</h4><p>Known to self, Known to others</p></div>
+                    <div class="johari-quadrant"><h4 class="font-serif text-2xl text-amber-300">Blind Self</h4><p>Not known to self, Known to others</p></div>
+                    <div class="johari-quadrant"><h4 class="font-serif text-2xl text-blue-300">Hidden Self</h4><p>Known to self, Not known to others</p></div>
+                    <div class="johari-quadrant"><h4 class="font-serif text-2xl text-gray-400">Unknown Self</h4><p>Not known to self, Not known to others</p></div>
+                </div>
+                <div class="mt-8">
+                     <label for="prompt-johari" class="block text-xl font-semibold themed-label mb-2 text-center">What is one step you could take to increase your 'Open Self' with your team?</label>
+                    <textarea id="prompt-johari" class="w-full p-4 themed-textarea rounded-lg min-h-[100px] text-lg mt-2" placeholder="e.g., Share a personal story about a past failure or success..."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-3" class="section" role="region" aria-labelledby="values-title">
+            <div class="max-w-5xl content-card p-6 lg:p-8">
+                <div class="text-center mb-4">
+                    <h3 id="values-title" class="font-serif text-4xl md:text-5xl font-bold gradient-text">Discovering Your Personal Core Values</h3>
+                    <p class="text-lg text-gray-300 mt-4">Select the 5-7 values that are your non-negotiable guiding principles.</p>
+                </div>
+                <div id="values-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 p-2 max-h-[40vh] overflow-y-auto"></div>
+                <div class="mt-4 p-3 bg-black bg-opacity-20 rounded-lg">
+                    <div id="selected-values-display" aria-live="polite" class="text-center text-white font-bold text-lg min-h-[2.5rem] flex items-center justify-center flex-wrap gap-x-2"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-4" class="section" role="region" aria-labelledby="shortcuts-title">
+            <div class="max-w-4xl content-card p-8 lg:p-12" role="group">
+                <div class="text-center">
+                    <h3 id="shortcuts-title" class="font-serif text-4xl md:text-5xl font-black gradient-text tracking-tight">Connecting Values to Actions</h3>
+                    <p class="text-lg md:text-xl leading-relaxed text-center max-w-3xl mx-auto mt-4">Unconscious bias can create a gap between our stated values and our actual actions. Recognizing our mental shortcuts is key to ensuring our values truly guide our leadership.</p>
+                    <figure class="my-6 shadow-2xl rounded-2xl overflow-hidden border-2 border-gray-600">
+                        <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/dVp9Z5k0dEE" title="YouTube video player: Understanding Unconscious Bias" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </figure>
+                     <div class="mt-8">
+                        <label for="prompt-shortcuts" class="block text-xl font-semibold themed-label mb-2">Which bias might challenge your ability to act on your newly identified core values?</label>
+                        <textarea id="prompt-shortcuts" class="w-full p-4 themed-textarea min-h-[100px] text-lg mt-2" placeholder="e.g., Affinity bias could challenge my value of Fairness..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Part 3: The Bridge -->
+        <section id="section-5" class="section" role="region" aria-labelledby="dna-title">
+            <div class="max-w-4xl content-card p-8 lg:p-12" role="group">
+                 <h2 class="font-serif text-2xl text-amber-300 text-center">Part 3: The Bridge</h2>
+                <div class="text-center">
+                    <h3 id="dna-title" class="font-serif text-4xl md:text-5xl font-black gradient-text tracking-tight mt-2">Fostering Belonging & Uniqueness</h3>
+                     <p class="text-lg md:text-xl leading-relaxed text-center max-w-3xl mx-auto mt-4">An inclusive culture balances two core needs: the need to <strong class="text-amber-300">belong</strong> and the need to be <strong class="text-amber-300">unique</strong>. When uniqueness is sacrificed for belonging, team members may resort to "covering"—downplaying their identity to fit in.</p>
+                </div>
+                <div class="mt-8">
+                     <label for="prompt-covering" class="block text-xl font-semibold themed-label mb-2 text-center">In what ways can you model authenticity to make it safer for others to stop "covering"?</label>
+                    <textarea id="prompt-covering" class="w-full p-4 themed-textarea min-h-[100px] text-lg mt-2" placeholder="e.g., I can openly talk about my own affiliations..."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-6" class="section" role="region" aria-labelledby="empathy-title">
+             <div class="max-w-5xl content-card p-8 lg:p-12 text-center" role="group">
+                <h3 id="empathy-title" class="font-serif text-4xl md:text-5xl font-bold gradient-text mb-8">The Skill of Empathy</h3>
+                <figure class="my-6 shadow-2xl rounded-2xl overflow-hidden border-2 border-gray-600 max-w-3xl mx-auto">
+                    <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/3XzWKWfVRxc" title="YouTube video player: The Power of Empathy in Leadership" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </figure>
+                <div class="grid md:grid-cols-3 gap-6 mt-8">
+                    <div class="johari-quadrant"><h4 class="font-serif text-2xl text-blue-300 mb-2">Cognitive Empathy</h4><p>"I understand your perspective."</p></div>
+                    <div class="johari-quadrant"><h4 class="font-serif text-2xl text-green-300 mb-2">Emotional Empathy</h4><p>"I feel with you."</p></div>
+                    <div class="johari-quadrant"><h4 class="font-serif text-2xl text-amber-300 mb-2">Compassionate Empathy</h4><p>"I am moved to help you."</p></div>
+                </div>
+                 <div class="mt-8">
+                    <label for="prompt-empathy" class="block text-xl font-semibold themed-label mb-2">Which level of empathy do you find most challenging to practice? Why?</label>
+                    <input id="prompt-empathy" type="text" class="w-full p-3 themed-input mt-2" placeholder="I find compassionate empathy challenging because...">
                 </div>
             </div>
         </section>
         
-        <!-- Slide 2: Educator Spotlight Video -->
-        <section id="slide-2" class="slide" role="region" aria-labelledby="spotlight-video-title">
-             <div class="w-full max-w-4xl content-card p-8 lg:p-12" role="group">
-                <h2 id="spotlight-video-title" class="font-serif text-3xl text-center font-bold gradient-text mb-6">In Her Own Words</h2>
-                <div class="w-full shadow-2xl rounded-2xl overflow-hidden border-2 border-gray-600 aspect-video">
-                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/3PnQ100VrsY" title="YouTube video player: Interview with Dr. Sharonica Hardin-Bartley" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <section id="section-7" class="section" role="region" aria-labelledby="inclusive-conversations-title">
+            <div class="max-w-4xl content-card p-8 lg:p-12" role="group">
+                 <h3 id="inclusive-conversations-title" class="font-serif text-4xl md:text-5xl font-bold gradient-text text-center mb-6">Tools for Inclusive Conversations</h3>
+                 <div class="grid md:grid-cols-3 gap-6 text-center text-lg">
+                    <div class="johari-quadrant"><h4 class="font-serif text-xl text-amber-300 mb-2">Listen to Understand, Not to Respond</h4><p>Focus on hearing the speaker's full thought before formulating your own.</p></div>
+                    <div class="johari-quadrant"><h4 class="font-serif text-xl text-amber-300 mb-2">Ask Open-Ended Questions</h4><p>Use "What" or "How" questions to encourage deeper sharing.</p></div>
+                    <div class="johari-quadrant"><h4 class="font-serif text-xl text-amber-300 mb-2">Assume Good Intent</h4><p>Start from a place of trust. If impact is negative, address it, but don't assume malice.</p></div>
+                 </div>
+                 <div class="mt-8">
+                    <label for="quiz-scenario" class="block text-xl font-semibold themed-label mb-2">Scenario: A team member seems disengaged. Which tool would you use first?</label>
+                    <select id="quiz-scenario" class="w-full p-2 themed-select"><option>Select a tool</option><option>Ask Open-Ended Questions</option><option>Listen to Understand</option><option>Assume Good Intent</option></select>
+                 </div>
+            </div>
+        </section>
+
+        <!-- Part 4: The Campfire -->
+        <section id="section-8" class="section" role="region" aria-labelledby="conversation-circle-title">
+             <div class="max-w-4xl content-card p-8 lg:p-12" role="group">
+                <h2 class="font-serif text-2xl text-amber-300 text-center">Part 4: The Campfire</h2>
+                <h3 id="conversation-circle-title" class="font-serif text-4xl md:text-5xl font-bold gradient-text text-center mt-2 mb-6">Preparing for the Conversation Circle</h3>
+                <p class="text-lg text-gray-300 mb-6 text-center">This solo journey has prepared you for the most important part: team dialogue. To create a safe space for sharing, you need to be intentional.</p>
+                <div class="mt-4 relative">
+                    <label for="prompt-safespace" class="block text-xl font-semibold themed-label mb-2">What is one ground rule you will propose for your team's 'Inclusive Conversations Circle' to ensure everyone feels safe to share?</label>
+                    <textarea id="prompt-safespace" class="w-full p-4 themed-textarea min-h-[100px] text-lg" placeholder="e.g., We will not interrupt when someone is sharing..."></textarea>
                 </div>
              </div>
         </section>
 
-        <!-- Slide 3: The Leader's Lens Intro -->
-        <section id="slide-3" class="slide" role="region" aria-labelledby="lens-title">
-            <div class="w-full max-w-4xl content-card p-8 lg:p-12" role="group">
-                <div class="text-center">
-                    <h2 id="lens-title" class="font-serif text-4xl md:text-6xl font-black gradient-text tracking-tight">The Leader's Lens</h2>
-                    <p class="text-lg md:text-xl leading-relaxed text-center max-w-3xl mx-auto mt-4">Effective inclusive leadership begins with self-awareness. Our personal identity—our experiences, values, and biases—forms the lens through which we see the world. The first step is to clarify what you value most.</p>
-                </div>
-                <div class="my-6 shadow-2xl rounded-2xl overflow-hidden border-2 border-gray-600">
-                    <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/L2WOPqfhqbc" title="YouTube video player: The Power of Knowing Your Identity" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-            </div>
-        </section>
-        
-        <!-- NEW Slide 4: Values Discovery Activity -->
-        <section id="slide-4" class="slide" role="region" aria-labelledby="values-title">
-            <div class="w-full max-w-5xl content-card p-6 lg:p-8 flex flex-col h-[90vh]">
-                <div class="text-center mb-4">
-                    <h2 id="values-title" class="font-serif text-3xl md:text-4xl font-bold gradient-text">Discover Your Core Values</h2>
-                    <p class="text-lg text-gray-300">Select the 5-7 values that resonate most deeply with you.</p>
-                </div>
-                <div id="values-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 p-2 flex-grow overflow-y-auto">
-                    <!-- Value buttons will be injected here by JavaScript -->
-                </div>
-                <div class="mt-4 p-3 bg-black bg-opacity-20 rounded-lg">
-                    <p class="text-center text-amber-300 font-semibold">Your selected values will appear here:</p>
-                    <p id="selected-values-display" class="text-center text-white font-bold text-lg min-h-[2.5rem] flex items-center justify-center flex-wrap gap-x-2"></p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 5: The Leader's Lens Activity (Formerly Slide 4) -->
-        <section id="slide-5" class="slide" role="region" aria-labelledby="lens-activity-title">
-            <div class="w-full max-w-4xl content-card p-8 lg:p-12" role="group">
-                <h2 id="lens-activity-title" class="font-serif text-3xl md:text-4xl font-bold mb-6 text-white text-center">Apply Your Values</h2>
-                <div class="mt-4 relative">
-                    <label for="prompt-lens-1" class="block text-xl font-semibold themed-label mb-2">From the values you just selected, choose one. Describe a specific time it guided a difficult leadership decision.</label>
-                    <textarea id="prompt-lens-1" class="w-full p-4 themed-textarea rounded-lg resize-y min-h-[120px] text-lg shadow-inner" placeholder="e.g., My value of [Integrity] guided me when..."></textarea>
-                </div>
-                <div class="mt-6 p-6 commitment-box rounded-2xl">
-                    <label for="commit-lens-1" class="block text-2xl font-bold text-white mb-2">My One Commitment</label>
-                    <p class="text-lg text-gray-300 mb-3">This week, I will consciously check if my actions align with my selected core values in at least one meeting.</p>
-                    <input type="text" id="commit-lens-1" class="w-full p-3 themed-input rounded-lg text-lg" placeholder="Confirm your commitment here...">
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 6: The DNA of Inclusion Intro -->
-        <section id="slide-6" class="slide" role="region" aria-labelledby="dna-title">
-            <div class="w-full max-w-4xl content-card p-8 lg:p-12" role="group">
-                <div class="text-center">
-                    <h2 id="dna-title" class="font-serif text-4xl md:text-6xl font-black gradient-text tracking-tight">The DNA of Inclusion</h2>
-                     <p class="text-lg md:text-xl leading-relaxed text-center max-w-3xl mx-auto mt-4">Inclusive leadership is more than a buzzword. It's the skill of fostering a sense of <strong class="text-amber-300">belongingness</strong> while simultaneously valuing the <strong class="text-amber-300">uniqueness</strong> of each individual. This balance creates psychological safety, the bedrock of high-performing teams.</p>
-                </div>
-                <div class="my-6 shadow-2xl rounded-2xl overflow-hidden border-2 border-gray-600">
-                    <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/LhoLuui9gX8" title="YouTube video player: The DNA of Inclusion Explained" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 7: The DNA of Inclusion Activity -->
-        <section id="slide-7" class="slide" role="region" aria-labelledby="dna-activity-title">
-            <div class="w-full max-w-4xl content-card p-8 lg:p-12" role="group">
-                 <h2 id="dna-activity-title" class="font-serif text-3xl md:text-4xl font-bold mb-6 text-white text-center">Your Turn: DNA of Inclusion</h2>
-                <div class="mt-4 relative">
-                    <label for="prompt-dna-1" class="block text-xl font-semibold themed-label mb-2">Which pillar (Valuing Uniqueness or Fostering Belongingness) feels like a more natural strength for you? Which requires more intentional effort?</label>
-                    <textarea id="prompt-dna-1" class="w-full p-4 themed-textarea rounded-lg resize-y min-h-[120px] text-lg shadow-inner" placeholder="Your thoughts here..."></textarea>
-                </div>
-                <div class="mt-6 p-6 commitment-box rounded-2xl">
-                    <label for="commit-dna-1" class="block text-2xl font-bold text-white mb-2">My One Commitment</label>
-                    <p class="text-lg text-gray-300 mb-3">What is one specific action you will take this week to strengthen your weaker pillar?</p>
-                    <input type="text" id="commit-dna-1" class="w-full p-3 themed-input rounded-lg text-lg" placeholder="e.g., Actively solicit an opinion from a quiet team member.">
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 8: Mind's Shortcuts Intro -->
-        <section id="slide-8" class="slide" role="region" aria-labelledby="shortcuts-title">
-            <div class="w-full max-w-4xl content-card p-8 lg:p-12" role="group">
-                <div class="text-center">
-                    <h2 id="shortcuts-title" class="font-serif text-4xl md:text-6xl font-black gradient-text tracking-tight">Navigating the Mind's Shortcuts</h2>
-                    <p class="text-lg md:text-xl leading-relaxed text-center max-w-3xl mx-auto mt-4">Our brains are wired for efficiency, creating mental shortcuts. When applied to people, they become unconscious biases—unfair judgments that operate outside our conscious awareness. Recognizing these patterns is crucial for making equitable decisions.</p>
-                </div>
-                <div class="my-6 shadow-2xl rounded-2xl overflow-hidden border-2 border-gray-600">
-                    <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/dVp9Z5k0dEE" title="YouTube video player: Understanding Unconscious Bias" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 9: Mind's Shortcuts Activity -->
-        <section id="slide-9" class="slide" role="region" aria-labelledby="shortcuts-activity-title">
-            <div class="w-full max-w-4xl content-card p-8 lg:p-12" role="group">
-                <h2 id="shortcuts-activity-title" class="font-serif text-3xl md:text-4xl font-bold mb-6 text-white text-center">Your Turn: Mind's Shortcuts</h2>
-                <div class="mt-4 relative">
-                    <label for="prompt-shortcuts-1" class="block text-xl font-semibold themed-label mb-2">Which common bias (e.g., affinity bias, confirmation bias) do you think most affects your team's dynamics or decision-making? Why?</label>
-                    <textarea id="prompt-shortcuts-1" class="w-full p-4 themed-textarea rounded-lg resize-y min-h-[120px] text-lg shadow-inner" placeholder="Your thoughts here..."></textarea>
-                </div>
-                <div class="mt-6 p-6 commitment-box rounded-2xl">
-                    <label for="commit-shortcuts-1" class="block text-2xl font-bold text-white mb-2">My One Commitment</label>
-                    <p class="text-lg text-gray-300 mb-3">Based on my reflections, what is one strategy I will use this week to mitigate that bias?</p>
-                    <input type="text" id="commit-shortcuts-1" class="w-full p-3 themed-input rounded-lg text-lg" placeholder="e.g., Write down decision criteria before reviewing options.">
-                </div>
-            </div>
-        </section>
-        
-        <!-- Slide 10: The Empathy Bridge Intro -->
-        <section id="slide-10" class="slide" role="region" aria-labelledby="empathy-title">
-            <div class="w-full max-w-4xl content-card p-8 lg:p-12" role="group">
-                <div class="text-center">
-                    <h2 id="empathy-title" class="font-serif text-4xl md:text-6xl font-black gradient-text tracking-tight">The Empathy Bridge</h2>
-                    <p class="text-lg md:text-xl leading-relaxed text-center max-w-3xl mx-auto mt-4">Empathy is not about feeling sorry for someone; it's about striving to understand their perspective. For leaders, it's a critical skill for building trust, fostering collaboration, and navigating conflict. It requires active listening and a genuine curiosity about others' experiences.</p>
-                </div>
-                <div class="my-6 shadow-2xl rounded-2xl overflow-hidden border-2 border-gray-600">
-                    <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/3XzWKWfVRxc" title="YouTube video player: The Power of Empathy in Leadership" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 11: Goleman's Levels of Empathy -->
-        <section id="slide-11" class="slide" role="region" aria-labelledby="empathy-levels-title">
-            <div class="w-full max-w-5xl p-8 text-center" role="group">
-                <h2 id="empathy-levels-title" class="font-serif text-4xl font-bold gradient-text mb-8">Goleman's Levels of Empathy</h2>
-                <div class="grid md:grid-cols-3 gap-6">
-                    <!-- Cognitive Empathy -->
-                    <div class="content-card p-6 flex flex-col items-center border-t-4 border-blue-400">
-                        <h3 class="font-serif text-2xl text-blue-300 mb-2">Cognitive Empathy</h3>
-                        <p class="text-lg font-semibold mb-4">"I understand your perspective."</p>
-                        <p class="text-gray-300">The ability to understand another person's point of view on an intellectual level. You can see their mental models and how they see the world.</p>
+        <section id="section-9" class="section" role="region" aria-labelledby="unified-statement-title">
+            <div class="max-w-4xl content-card p-8 lg:p-12" role="group">
+                <h3 id="unified-statement-title" class="font-serif text-4xl md:text-5xl font-bold gradient-text text-center mb-6">Application: Crafting Your Unified Values Statement</h3>
+                <div class="space-y-6">
+                    <div>
+                        <label for="prompt-list-values" class="block text-xl font-semibold themed-label mb-2">1. Your selected core values (for reference).</label>
+                        <input id="prompt-list-values" type="text" class="w-full p-3 themed-input" placeholder="Authenticity, Growth, Community..." readonly>
                     </div>
-                    <!-- Emotional Empathy -->
-                    <div class="content-card p-6 flex flex-col items-center border-t-4 border-green-400">
-                        <h3 class="font-serif text-2xl text-green-300 mb-2">Emotional Empathy</h3>
-                        <p class="text-lg font-semibold mb-4">"I feel with you."</p>
-                        <p class="text-gray-300">The ability to feel what another person feels. This creates a sense of rapport and deep connection through shared emotions.</p>
+                    <div>
+                        <label for="prompt-team-themes" class="block text-xl font-semibold themed-label mb-2">2. After team discussion, what 3-5 value themes emerged?</label>
+                        <input id="prompt-team-themes" type="text" class="w-full p-3 themed-input" placeholder="Respect, Innovation, Collaboration...">
                     </div>
-                    <!-- Compassionate Empathy -->
-                    <div class="content-card p-6 flex flex-col items-center border-t-4 border-amber-400">
-                        <h3 class="font-serif text-2xl text-amber-300 mb-2">Compassionate Empathy</h3>
-                        <p class="text-lg font-semibold mb-4">"I am moved to help you."</p>
-                        <p class="text-gray-300">Understanding and feeling someone's situation, and then being spontaneously moved to act and help them if needed.</p>
+                    <div>
+                        <label for="prompt-statement-draft" class="block text-xl font-semibold themed-label mb-2">3. Draft a 'Unified Values Statement' (1-3 sentences).</label>
+                        <textarea id="prompt-statement-draft" class="w-full p-4 themed-textarea min-h-[120px] text-lg" placeholder="e.g., We lead with curiosity, act with integrity, and care for each other..."></textarea>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Slide 12: The Empathy Bridge Activity -->
-        <section id="slide-12" class="slide" role="region" aria-labelledby="empathy-activity-title">
-            <div class="w-full max-w-4xl content-card p-8 lg:p-12" role="group">
-                <h2 id="empathy-activity-title" class="font-serif text-3xl md:text-4xl font-bold mb-6 text-white text-center">Your Turn: The Empathy Bridge</h2>
-                <div class="mt-4 relative">
-                    <label for="prompt-empathy-1" class="block text-xl font-semibold themed-label mb-2">Recall a recent disagreement. What was the other person's perspective, and what underlying needs or values might have driven it?</label>
-                    <textarea id="prompt-empathy-1" class="w-full p-4 themed-textarea rounded-lg resize-y min-h-[120px] text-lg shadow-inner" placeholder="Their perspective was likely driven by..."></textarea>
-                </div>
-                <div class="mt-6 p-6 commitment-box rounded-2xl">
-                    <label for="commit-empathy-1" class="block text-2xl font-bold text-white mb-2">My One Commitment</label>
-                    <p class="text-lg text-gray-300 mb-3">In my next one-on-one meeting, I will spend the first 10 minutes asking questions to understand my team member's current challenges and successes, without offering solutions.</p>
-                    <input type="text" id="commit-empathy-1" class="w-full p-3 themed-input rounded-lg text-lg" placeholder="Confirm your commitment here...">
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 13: Art of Connection Intro -->
-        <section id="slide-13" class="slide" role="region" aria-labelledby="connection-title">
-            <div class="w-full max-w-4xl content-card p-8 lg:p-12" role="group">
+        <section id="section-10" class="section" role="region" aria-labelledby="ripple-title">
+            <div class="max-w-4xl content-card p-8 lg:p-12" role="group">
                 <div class="text-center">
-                    <h2 id="connection-title" class="font-serif text-4xl md:text-6xl font-black gradient-text tracking-tight">The Art of Connection</h2>
-                    <p class="text-lg md:text-xl leading-relaxed text-center max-w-3xl mx-auto mt-4">The ability to connect authentically, understand emotions, and communicate with empathy is what transforms a group of individuals into a cohesive, high-performing team. This requires moving beyond surface-level interactions to build genuine rapport.</p>
-                </div>
-                <div class="my-6 shadow-2xl rounded-2xl overflow-hidden border-2 border-gray-600">
-                    <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/2PSfT8GLB4M" title="YouTube video player: The Art of Authentic Connection" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 14: Art of Connection Activity -->
-        <section id="slide-14" class="slide" role="region" aria-labelledby="connection-activity-title">
-            <div class="w-full max-w-4xl content-card p-8 lg:p-12" role="group">
-                <h2 id="connection-activity-title" class="font-serif text-3xl md:text-4xl font-bold mb-6 text-white text-center">Your Turn: The Art of Connection</h2>
-                <div class="mt-4 relative">
-                    <label for="prompt-connection-1" class="block text-xl font-semibold themed-label mb-2">Looking at the Empathetic Communication Spectrum (Sympathy vs. Empathy), where do you typically operate in challenging conversations? Where would you like to be?</label>
-                    <textarea id="prompt-connection-1" class="w-full p-4 themed-textarea rounded-lg resize-y min-h-[120px] text-lg shadow-inner" placeholder="Your thoughts here..."></textarea>
-                </div>
-                <div class="mt-6 p-6 commitment-box rounded-2xl">
-                    <label for="commit-connection-1" class="block text-2xl font-bold text-white mb-2">My One Commitment</label>
-                    <p class="text-lg text-gray-300 mb-3">Based on my reflections, what is one specific action I will take this week to improve my empathetic communication?</p>
-                    <input type="text" id="commit-connection-1" class="w-full p-3 themed-input rounded-lg text-lg" placeholder="e.g., Ask 'tell me more' before offering a solution.">
-                </div>
-            </div>
-        </section>
-        
-        <!-- Slide 15: The Ripple Effect Intro -->
-        <section id="slide-15" class="slide" role="region" aria-labelledby="ripple-title">
-            <div class="w-full max-w-4xl content-card p-8 lg:p-12" role="group">
-                <div class="text-center">
-                    <h2 id="ripple-title" class="font-serif text-4xl md:text-6xl font-black gradient-text tracking-tight">The Ripple Effect</h2>
-                    <p class="text-lg md:text-xl leading-relaxed text-center max-w-3xl mx-auto mt-4">Our individual actions as leaders create ripples that can either reinforce or challenge existing systems. Championing inclusion means recognizing our power to influence norms and policies. It's about moving from being a passive bystander to an active ally for equity.</p>
-                </div>
-                <div class="my-6 shadow-2xl rounded-2xl overflow-hidden border-2 border-gray-600">
-                    <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/YYnWsAoGRPE" title="YouTube video player: How to be an Ally and an Advocate" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <h3 id="ripple-title" class="font-serif text-4xl md:text-5xl font-black gradient-text tracking-tight">Living Our Shared Values</h3>
+                    <p class="text-lg md:text-xl leading-relaxed text-center max-w-3xl mx-auto mt-4">A values statement is only powerful when it's put into action. Your commitment to embedding these values in your team's processes creates a ripple effect of inclusion.</p>
+                    <figure class="my-6 shadow-2xl rounded-2xl overflow-hidden border-2 border-gray-600">
+                        <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/YYnWsAoGRPE" title="YouTube video player: How to be an Ally and an Advocate" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </figure>
+                    <div class="mt-8">
+                        <label for="commit-ripple" class="block text-xl font-semibold themed-label mb-2">Based on your new Unified Values Statement, what is one process you will change to better align with your shared identity?</label>
+                        <input type="text" id="commit-ripple" class="w-full p-3 themed-input mt-2" placeholder="e.g., I will change our feedback process to align with our value of Transparency...">
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Slide 16: The Ripple Effect Activity -->
-        <section id="slide-16" class="slide" role="region" aria-labelledby="ripple-activity-title">
-            <div class="w-full max-w-4xl content-card p-8 lg:p-12" role="group">
-                <h2 id="ripple-activity-title" class="font-serif text-3xl md:text-4xl font-bold mb-6 text-white text-center">Your Turn: The Ripple Effect</h2>
-                <div class="mt-4 relative">
-                    <label for="prompt-ripple-1" class="block text-xl font-semibold themed-label mb-2">Identify one process or team norm (e.g., how meetings are run, how feedback is given) that might unintentionally exclude some voices. What is one small change you could propose?</label>
-                    <textarea id="prompt-ripple-1" class="w-full p-4 themed-textarea rounded-lg resize-y min-h-[120px] text-lg shadow-inner" placeholder="e.g., Our meeting structure favors extroverts. I could propose..."></textarea>
-                </div>
-                <div class="mt-6 p-6 commitment-box rounded-2xl">
-                    <label for="commit-ripple-1" class="block text-2xl font-bold text-white mb-2">My One Commitment</label>
-                    <p class="text-lg text-gray-300 mb-3">This month, I will use my position to publicly recognize the contribution of a team member from an underrepresented group.</p>
-                    <input type="text" id="commit-ripple-1" class="w-full p-3 themed-input rounded-lg text-lg" placeholder="Confirm your commitment here...">
-                </div>
-            </div>
-        </section>
-
-        <!-- Slide 17: Print Section -->
-        <section id="slide-17" class="slide" role="region" aria-labelledby="print-title">
-            <div class="w-full max-w-4xl content-card p-8 lg:p-12 text-center" role="group">
-                <h2 id="print-title" class="font-serif text-4xl md:text-5xl font-extrabold gradient-text mb-4">Your Field Guide is Ready</h2>
-                <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">Save or print a beautifully formatted record of all your reflections and commitments from this journey. This document will serve as a valuable reference as you continue to grow as an inclusive leader.</p>
+        <section id="section-11" class="section" role="region" aria-labelledby="print-title">
+            <div class="max-w-4xl content-card p-8 lg:p-12 text-center" role="group">
+                <h2 id="print-title" class="font-serif text-4xl md:text-5xl font-extrabold gradient-text mb-4">Your Foundational Field Guide</h2>
+                <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">You have completed the foundational work. Save a record of your reflections and your Unified Values Statement to prepare for Module 1.2, where you will explore the stories behind these values.</p>
                  <input type="hidden" id="selected-values-for-print">
                 <div class="mt-8 flex justify-center">
-                    <button id="print-btn" class="flex items-center justify-center bg-gold text-white px-8 py-4 rounded-full text-xl font-bold shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-2xl hover:bg-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-400">
+                    <button id="print-btn" class="flex items-center justify-center bg-gold text-white px-8 py-4 rounded-full text-xl font-bold shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-2xl hover:bg-amber-500 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-amber-400">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 mr-3" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                         Generate & Print My Notes
                     </button>
@@ -475,207 +263,141 @@
 
     </main>
 
-    <!-- Navigation UI -->
-    <button id="prev-btn" class="nav-arrow" aria-label="Previous Slide">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-    </button>
-    <button id="next-btn" class="nav-arrow" aria-label="Next Slide">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-    </button>
-    <div id="progress-dots" role="navigation" aria-label="Slide Progress"></div>
-
-    <!-- Hidden area for printing -->
     <div id="printable-area" class="hidden" aria-hidden="true"></div>
 
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const slider = document.getElementById('slider-container');
-        const slides = Array.from(document.querySelectorAll('.slide'));
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const dotsContainer = document.getElementById('progress-dots');
-        const printBtn = document.getElementById('print-btn');
-        let currentSlide = 0;
+    (function() {
+        'use strict';
+        document.addEventListener('DOMContentLoaded', () => {
+            const dom = {
+                sections: Array.from(document.querySelectorAll('.section')),
+                navContainer: document.getElementById('side-nav'),
+                printBtn: document.getElementById('print-btn'),
+                valuesGrid: document.getElementById('values-grid'),
+                selectedValuesDisplay: document.getElementById('selected-values-display'),
+                selectedValuesForPrint: document.getElementById('selected-values-for-print'),
+                listValuesInput: document.getElementById('prompt-list-values'),
+                printableArea: document.getElementById('printable-area'),
+            };
 
-        const values = [
-            'Accountability', 'Achievement', 'Adaptability', 'Adventure', 'Altruism', 'Ambition', 'Authenticity',
-            'Balance', 'Belonging', 'Boldness', 'Collaboration', 'Commitment', 'Community', 'Compassion',
-            'Competence', 'Confidence', 'Connection', 'Contentment', 'Contribution', 'Cooperation', 'Courage',
-            'Creativity', 'Curiosity', 'Dependability', 'Dignity', 'Discipline', 'Diversity', 'Empathy',
-            'Empowerment', 'Endurance', 'Equality', 'Excellence', 'Fairness', 'Faith', 'Family', 'Flexibility',
-            'Forgiveness', 'Freedom', 'Friendship', 'Fun', 'Generosity', 'Gratitude', 'Growth', 'Harmony',
-            'Health', 'Honesty', 'Hope', 'Humility', 'Humor', 'Inclusion', 'Independence', 'Initiative',
-            'Innovation', 'Integrity', 'Intuition', 'Joy', 'Justice', 'Kindness', 'Knowledge', 'Leadership',
-            'Learning', 'Legacy', 'Love', 'Loyalty', 'Mastery', 'Meaning', 'Mindfulness', 'Moderation',
-            'Open-mindedness', 'Optimism', 'Order', 'Originality', 'Passion', 'Patience', 'Peace', 'Perseverance',
-            'Playfulness', 'Poise', 'Power', 'Proactivity', 'Prosperity', 'Purpose', 'Quality', 'Recognition',
-            'Relationships', 'Reliability', 'Resilience', 'Resourcefulness', 'Respect', 'Responsibility',
-            'Risk-taking', 'Safety', 'Security', 'Self-control', 'Self-respect', 'Serenity', 'Service',
-            'Simplicity', 'Skillfulness', 'Spirituality', 'Spontaneity', 'Stability', 'Status', 'Stewardship',
-            'Strength', 'Success', 'Teamwork', 'Thoroughness', 'Thoughtfulness', 'Tradition', 'Tranquility',
-            'Transparency', 'Trust', 'Truth', 'Understanding', 'Uniqueness', 'Usefulness', 'Versatility',
-            'Vision', 'Vitality', 'Wealth', 'Well-being', 'Wholeness', 'Wisdom'
-        ];
+            const valuesList = ['Accountability', 'Achievement', 'Adaptability', 'Authenticity', 'Balance', 'Belonging', 'Collaboration', 'Community', 'Compassion', 'Courage', 'Creativity', 'Curiosity', 'Dignity', 'Diversity', 'Empathy', 'Equality', 'Excellence', 'Fairness', 'Family', 'Freedom', 'Fun', 'Gratitude', 'Growth', 'Harmony', 'Honesty', 'Humility', 'Inclusion', 'Integrity', 'Justice', 'Kindness', 'Knowledge', 'Leadership', 'Learning', 'Loyalty', 'Meaning', 'Optimism', 'Passion', 'Patience', 'Peace', 'Perseverance', 'Purpose', 'Quality', 'Recognition', 'Relationships', 'Reliability', 'Resilience', 'Respect', 'Responsibility', 'Safety', 'Security', 'Service', 'Spirituality', 'Stability', 'Success', 'Teamwork', 'Trust', 'Truth', 'Understanding', 'Vision', 'Wisdom'];
+            let selectedValues = [];
+            
+            function init() {
+                createNavDots();
+                setupObservers();
+                setupValuesGrid();
+                setupEventListeners();
+                updateSelectedValuesDisplay();
+            }
 
-        const valuesGrid = document.getElementById('values-grid');
-        const selectedValuesDisplay = document.getElementById('selected-values-display');
-        const selectedValuesForPrint = document.getElementById('selected-values-for-print');
-        let selectedValues = [];
+            function createNavDots() {
+                const fragment = document.createDocumentFragment();
+                dom.sections.forEach((section, i) => {
+                    const dot = document.createElement('a');
+                    dot.className = 'nav-dot';
+                    dot.href = `#${section.id}`;
+                    dot.setAttribute('aria-label', `Go to section ${i + 1}`);
+                    fragment.appendChild(dot);
+                });
+                dom.navContainer.appendChild(fragment);
+            }
 
-        // Populate the values grid
-        values.forEach(value => {
-            const btn = document.createElement('button');
-            btn.classList.add('value-btn', 'p-2', 'rounded-lg', 'text-sm');
-            btn.textContent = value;
-            btn.dataset.value = value;
-            valuesGrid.appendChild(btn);
-        });
+            function setupValuesGrid() {
+                const fragment = document.createDocumentFragment();
+                valuesList.forEach(value => {
+                    const btn = document.createElement('button');
+                    btn.className = 'value-btn p-2 rounded-lg text-sm';
+                    btn.textContent = value;
+                    btn.dataset.value = value;
+                    fragment.appendChild(btn);
+                });
+                dom.valuesGrid.appendChild(fragment);
+            }
 
-        // Handle value selection
-        valuesGrid.addEventListener('click', (e) => {
-            if (e.target.tagName === 'BUTTON') {
+            function setupEventListeners() {
+                dom.valuesGrid.addEventListener('click', handleValueSelection);
+                dom.printBtn.addEventListener('click', handlePrint);
+            }
+
+            function handleValueSelection(e) {
+                if (e.target.tagName !== 'BUTTON') return;
                 const value = e.target.dataset.value;
-                if (selectedValues.includes(value)) {
-                    selectedValues = selectedValues.filter(v => v !== value);
+                const index = selectedValues.indexOf(value);
+                if (index > -1) {
+                    selectedValues.splice(index, 1);
                     e.target.classList.remove('selected');
                 } else {
                     if (selectedValues.length < 7) {
                         selectedValues.push(value);
                         e.target.classList.add('selected');
-                    } else {
-                        // Optional: Add a visual cue that the limit is reached
                     }
                 }
                 updateSelectedValuesDisplay();
             }
-        });
 
-        function updateSelectedValuesDisplay() {
-            if (selectedValues.length > 0) {
-                 selectedValuesDisplay.textContent = selectedValues.join(' • ');
-            } else {
-                 selectedValuesDisplay.textContent = 'Select up to 7 values';
+            function updateSelectedValuesDisplay() {
+                const valuesText = selectedValues.length > 0 ? selectedValues.join(' • ') : 'Select up to 7 values';
+                dom.selectedValuesDisplay.textContent = valuesText;
+                const valuesString = selectedValues.join(', ');
+                dom.selectedValuesForPrint.value = valuesString;
+                dom.listValuesInput.value = valuesString; 
             }
-            selectedValuesForPrint.value = selectedValues.join(', ');
-        }
-        
-        updateSelectedValuesDisplay(); // Initial call
 
-        // --- Create Progress Dots ---
-        slides.forEach((slide, i) => {
-            const dot = document.createElement('button'); // Use button for semantics
-            dot.classList.add('progress-dot');
-            dot.dataset.slide = i;
-            dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-            dot.setAttribute('role', 'tab');
-            dotsContainer.appendChild(dot);
-        });
-        const dots = Array.from(document.querySelectorAll('.progress-dot'));
+            function setupObservers() {
+                const navDots = Array.from(dom.navContainer.querySelectorAll('.nav-dot'));
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            const activeIndex = dom.sections.findIndex(sec => sec.id === entry.target.id);
+                            navDots.forEach((dot, i) => dot.classList.toggle('active', i === activeIndex));
+                        }
+                    });
+                }, { threshold: 0.4 });
+                dom.sections.forEach(section => observer.observe(section));
+            }
 
-        // --- Update UI Function ---
-        function updateUI() {
-            slides.forEach((slide, i) => {
-                const isActive = i === currentSlide;
-                slide.classList.toggle('active', isActive);
-                slide.setAttribute('aria-hidden', !isActive);
-            });
-            dots.forEach((dot, i) => {
-                const isActive = i === currentSlide;
-                dot.classList.toggle('active', isActive);
-                dot.setAttribute('aria-selected', isActive);
-            });
-            prevBtn.style.visibility = currentSlide === 0 ? 'hidden' : 'visible';
-            nextBtn.style.visibility = currentSlide === slides.length - 1 ? 'hidden' : 'visible';
-        }
+            function handlePrint() {
+                const data = {
+                    spotlight: document.getElementById('prompt-spotlight').value,
+                    johari: document.getElementById('prompt-johari').value,
+                    myValues: dom.selectedValuesForPrint.value,
+                    shortcuts: document.getElementById('prompt-shortcuts').value,
+                    covering: document.getElementById('prompt-covering').value,
+                    safespace: document.getElementById('prompt-safespace').value,
+                    teamThemes: document.getElementById('prompt-team-themes').value,
+                    statement: document.getElementById('prompt-statement-draft').value,
+                    rippleCommitment: document.getElementById('commit-ripple').value,
+                };
+                dom.printableArea.innerHTML = generatePrintContent(data);
+                window.print();
+            }
 
-        // --- Navigation Functions ---
-        function goToSlide(slideIndex) {
-            slider.scrollTo({
-                left: slideIndex * window.innerWidth,
-                behavior: 'smooth'
-            });
-        }
-        
-        prevBtn.addEventListener('click', () => { if(currentSlide > 0) goToSlide(currentSlide - 1); });
-        nextBtn.addEventListener('click', () => { if(currentSlide < slides.length - 1) goToSlide(currentSlide + 1); });
-        dots.forEach(dot => {
-            dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.slide)));
-        });
+            function generatePrintContent(data) {
+                const createSection = (title, reflection) => `<div class="page-break-after" style="margin-bottom: 2.5rem;"><h2 style="font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: bold; color: #002a36; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">${title}</h2><p style="font-size: 1.1rem; line-height: 1.6; padding: 1rem; background-color: #f9f9f9; border-left: 4px solid #fde68a; border-radius: 4px;">${reflection || "<em>No reflection entered.</em>"}</p></div>`;
+                const valuesSection = `<div class="page-break-after" style="margin-bottom: 2.5rem;"><h2 style="font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: bold; color: #002a36; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">My Core Values</h2><p style="font-size: 1.2rem; padding: 1rem; background-color: #fde68a; border-radius: 4px; color: #002a36; text-align:center; font-weight:bold;">${data.myValues || "<em>No values selected.</em>"}</p></div>`;
+                const statementSection = `<div class="page-break-after" style="margin-bottom: 2.5rem;"><h2 style="font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: bold; color: #002a36; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">Our Unified Values Statement</h2><p style="font-size: 1.2rem; padding: 1rem; background-color: #fde68a; border-radius: 4px; color: #002a36; font-style:italic;">${data.statement || "<em>No statement drafted.</em>"}</p></div>`;
 
-        // --- Intersection Observer for slide detection ---
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const slideIndex = slides.indexOf(entry.target);
-                    if(slideIndex !== -1) {
-                        currentSlide = slideIndex;
-                        updateUI();
-                    }
-                }
-            });
-        }, { threshold: 0.6 });
-
-        slides.forEach(slide => observer.observe(slide));
-
-        // --- Print Functionality ---
-        printBtn.addEventListener('click', () => {
-            const printableArea = document.getElementById('printable-area');
-            const reflections = {
-                myValues: document.getElementById('selected-values-for-print').value,
-                lens1: document.getElementById('prompt-lens-1').value,
-                commitLens1: document.getElementById('commit-lens-1').value,
-                dna1: document.getElementById('prompt-dna-1').value,
-                commitDna1: document.getElementById('commit-dna-1').value,
-                shortcuts1: document.getElementById('prompt-shortcuts-1').value,
-                commitShortcuts1: document.getElementById('commit-shortcuts-1').value,
-                empathy1: document.getElementById('prompt-empathy-1').value,
-                commitEmpathy1: document.getElementById('commit-empathy-1').value,
-                connection1: document.getElementById('prompt-connection-1').value,
-                commitConnection1: document.getElementById('commit-connection-1').value,
-                ripple1: document.getElementById('prompt-ripple-1').value,
-                commitRipple1: document.getElementById('commit-ripple-1').value,
-            };
-
-            const createSection = (title, reflection, commitment) => `
-                <div class="page-break-after" style="margin-bottom: 2.5rem;">
-                    <h2 style="font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: bold; color: #002a36; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">${title}</h2>
-                    <h3 style="font-size: 1.3rem; font-weight: bold; color: #333; margin-bottom: 0.5rem;">Personal Reflection</h3>
-                    <p style="font-size: 1.1rem; line-height: 1.6; margin-bottom: 1.5rem; padding: 1rem; background-color: #f9f9f9; border-left: 4px solid #fde68a; border-radius: 4px;">${reflection || "<em>No reflection entered.</em>"}</p>
-                    <h3 style="font-size: 1.3rem; font-weight: bold; color: #333; margin-bottom: 0.5rem;">My One Commitment</h3>
-                    <p style="font-size: 1.1rem; font-weight: 500; padding: 1rem; background-color: #fde68a; border-radius: 4px; color: #002a36;">${commitment || "<em>No commitment entered.</em>"}</p>
-                </div>
-            `;
-            
-            const valuesSection = `
-                 <div class="page-break-after" style="margin-bottom: 2.5rem;">
-                    <h2 style="font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: bold; color: #002a36; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem; margin-bottom: 1.5rem;">My Core Values</h2>
-                    <p style="font-size: 1.2rem; line-height: 1.6; padding: 1rem; background-color: #fde68a; border-radius: 4px; color: #002a36; text-align:center; font-weight:bold;">${reflections.myValues || "<em>No values selected.</em>"}</p>
-                </div>
-            `;
-
-            const content = `
-                <div style="font-family: 'Georgia', serif; padding: 2.5rem; color: #111;">
-                    <div style="text-align: center; margin-bottom: 3rem;">
-                        <h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: bold; color: #002a36; border-bottom: 2px solid #f39c12; padding-bottom: 1rem; display: inline-block;">My Pre-Reading Field Guide</h1>
-                        <p style="font-size: 1.1rem; color: #555; margin-top: 0.5rem;">A personal record of reflections and commitments from Module 1.1.</p>
+                return `
+                    <div style="font-family: 'Georgia', serif; padding: 2.5rem; color: #111;">
+                        <div style="text-align: center; margin-bottom: 3rem;"><h1 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: bold; color: #002a36; border-bottom: 2px solid #f39c12; padding-bottom: 1rem; display: inline-block;">My Foundational Field Guide</h1><p style="font-size: 1.1rem; color: #555; margin-top: 0.5rem;">Module 1.1 Reflections & Outcomes</p></div>
+                        ${createSection("Spotlight on Leadership: My Guiding Value", data.spotlight)}
+                        ${createSection("Johari Window: Increasing My 'Open Self'", data.johari)}
+                        ${valuesSection}
+                        ${createSection("Connecting Values to Actions (Bias Reflection)", data.shortcuts)}
+                        ${createSection("Fostering Belonging (Covering Reflection)", data.covering)}
+                        ${createSection("Preparing for Conversation (Ground Rule)", data.safespace)}
+                        ${createSection("Team Value Themes", data.teamThemes)}
+                        ${statementSection}
+                        ${createSection("Living Our Values (My Ripple Effect Commitment)", data.rippleCommitment)}
                     </div>
-                    ${valuesSection}
-                    ${createSection("Applying My Values (The Leader's Lens)", reflections.lens1, reflections.commitLens1)}
-                    ${createSection("The DNA of Inclusion", reflections.dna1, reflections.commitDna1)}
-                    ${createSection("Navigating the Mind's Shortcuts", reflections.shortcuts1, reflections.commitShortcuts1)}
-                    ${createSection("The Empathy Bridge", reflections.empathy1, reflections.commitEmpathy1)}
-                    ${createSection("The Art of Connection", reflections.connection1, reflections.commitConnection1)}
-                    ${createSection("The Ripple Effect", reflections.ripple1, reflections.commitRipple1)}
-                </div>
-            `;
-            
-            printableArea.innerHTML = content;
-            window.print();
-        });
+                `;
+            }
 
-        // Initial UI setup
-        updateUI();
-    });
+            init();
+        });
+    })();
     </script>
 </body>
 </html>
